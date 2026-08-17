@@ -1,0 +1,13 @@
+numpy
+tensorflow==1.14.0
+flask
+Werkzeug
+gunicorn
+nltk
+scikit-learn
+flask-cors
+flask-sqlalchemy
+flask-login
+bcrypt
+
+python retrain.py --output_graph=retrained_graph.pb --output_labels=retrained_labels.txt --architecure=MobileNet_1.0_224 --image_dir=dataset
