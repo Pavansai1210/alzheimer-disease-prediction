@@ -175,5 +175,9 @@ def not_found(error):
     return "404 error", 404
 
 if __name__ == '__main__':
-    # Disabling the reloader can save memory by avoiding the second process
-    app.run(debug=True, use_reloader=False)
+    app.run(
+        host='0.0.0.0',
+        port=8000,
+        debug=False,
+        use_reloader=False
+    )
