@@ -1,0 +1,11 @@
+
+numpy
+tensorflow==2.20.0
+Flask
+nltk
+scikit-learn
+Flask-Cors
+Flask-SQLAlchemy
+Flask-Login
+bcrypt
+gunicorn

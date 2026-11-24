@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Medical AI Assistant{% endblock %}</title>
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern_premium.css') }}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <nav class="navbar-modern">
+        <a href="/" class="nav-logo">
+            <i class="bi bi-shield-plus-fill"></i> REMDEX AI
+        </a>
+        <ul class="nav-links">
+            {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('home') }}" class="{% if request.path == '/home' %}active{% endif %}">Chatbot</a>
+            </li>
+            <li><a href="{{ url_for('index') }}" class="{% if request.path == '/index' %}active{% endif %}">AD
+                    Prediction</a></li>
+            <li><a href="{{ url_for('chart') }}" class="{% if request.path == '/chart' %}active{% endif %}">Analysis</a>
+            </li>
+            <li><a href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            {% else %}
+            <li><a href="{{ url_for('first') }}"
+                    class="{% if request.path == '/first' or request.path == '/' %}active{% endif %}">Home</a></li>
+            <li><a href="{{ url_for('login') }}" class="{% if request.path == '/login' %}active{% endif %}">Login</a>
+            </li>
+            <li><a href="{{ url_for('register') }}" class="btn-modern btn-primary-modern"
+                    style="padding: 0.5rem 1.2rem; margin-top: -5px;">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="container" style="width: 100%; max-width: 1200px;">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

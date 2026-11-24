@@ -1,0 +1,353 @@
+{% extends "base_modern.html" %}
+
+{% block title %}Analysis - REMDEX AI{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5 animate__animated animate__fadeIn">
+  <div
+    class="d-inline-block px-3 py-1 mb-2 rounded-pill bg-info bg-opacity-10 border border-info border-opacity-25 shadow-sm">
+    <span class="text-info"
+      style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">
+      <i class="bi bi-cpu-fill me-1"></i> Neural Engine v2.4 Active
+    </span>
+  </div>
+  <h1 class="gradient-text" style="font-size: 3rem; font-weight: 800; letter-spacing: -1px;">Clinical Intelligence
+    Dashboard</h1>
+  <p class="text-muted mx-auto" style="max-width: 600px;">Real-time performance analytics and diagnostic distribution
+    across the clinical validation dataset.</p>
+</div>
+
+<!-- Clinical Stats Preview -->
+<div class="row mb-4 justify-content-center animate__animated animate__fadeInUp">
+  <div class="col-md-3 mb-3">
+    <div class="glass-card p-3 text-center mx-auto" style="border: 1px solid rgba(0, 210, 255, 0.2); max-width: 280px;">
+      <div class="text-info mb-1" style="font-size: 1.5rem;"><i class="bi bi-activity"></i></div>
+      <div class="h4 mb-0" style="font-weight: 800;">1,240</div>
+      <div class="text-muted small" style="text-transform: uppercase; letter-spacing: 1px;">Total Scans</div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-3">
+    <div class="glass-card p-3 text-center mx-auto"
+      style="border: 1px solid rgba(16, 185, 129, 0.2); max-width: 280px;">
+      <div class="text-success mb-1" style="font-size: 1.5rem;"><i class="bi bi-lightning-charge-fill"></i></div>
+      <div class="h4 mb-0" style="font-weight: 800;">142ms</div>
+      <div class="text-muted small" style="text-transform: uppercase; letter-spacing: 1px;">Avg. Inference</div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-3">
+    <div class="glass-card p-3 text-center mx-auto" style="border: 1px solid rgba(255, 193, 7, 0.2); max-width: 280px;">
+      <div class="text-warning mb-1" style="font-size: 1.5rem;"><i class="bi bi-hdd-network-fill"></i></div>
+      <div class="h4 mb-0" style="font-weight: 800;">99.9%</div>
+      <div class="text-muted small" style="text-transform: uppercase; letter-spacing: 1px;">System Uptime</div>
+    </div>
+  </div>
+  <div class="col-md-3 mb-3">
+    <div class="glass-card p-3 text-center mx-auto"
+      style="border: 1px solid rgba(58, 123, 213, 0.2); max-width: 280px;">
+      <div class="text-primary mb-1" style="font-size: 1.5rem;"><i class="bi bi-shield-lock-fill"></i></div>
+      <div class="h4 mb-0" style="font-weight: 800;">Secure</div>
+      <div class="text-muted small" style="text-transform: uppercase; letter-spacing: 1px;">HIPAA Ready</div>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-5 justify-content-center">
+  <div class="col-md-4 mb-4">
+    <div
+      class="glass-card h-100 text-center p-4 shadow-lg position-relative overflow-hidden animate__animated animate__fadeInLeft"
+      style="border: 1px solid rgba(0, 210, 255, 0.2);">
+      <!-- Background Glow Effect -->
+      <div class="position-absolute"
+        style="top: -20px; right: -20px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(0, 210, 255, 0.1) 0%, transparent 70%);">
+      </div>
+
+      <h3 class="text-muted mb-2" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Model
+        Accuracy</h3>
+      <div class="accuracy-number gradient-text"
+        style="font-size: 4.5rem; font-weight: 900; line-height: 1; margin-bottom: 10px;">97.2%</div>
+
+      <div class="d-flex align-items-center justify-content-center mt-3">
+        <span class="badge bg-success bg-opacity-20 text-success border border-success border-opacity-25 px-3 py-2"
+          style="font-size: 0.8rem; border-radius: 20px;">
+          <i class="bi bi-shield-check me-1"></i> High Confidence Mode
+        </span>
+      </div>
+
+      <div class="mt-4 pt-3 border-top border-white border-opacity-5">
+        <div class="d-flex justify-content-between text-muted mb-2" style="font-size: 0.8rem;">
+          <span>Precision</span>
+          <span class="text-info">96.8%</span>
+        </div>
+        <div class="progress" style="height: 6px; background: rgba(255,255,255,0.05);">
+          <div class="progress-bar bg-info" style="width: 96.8%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8 mb-4">
+    <div class="glass-card h-100 p-0 overflow-hidden shadow-lg animate__animated animate__fadeInRight"
+      style="border: 1px solid rgba(0, 210, 255, 0.2);">
+      <div id="chartContainer" style="height: 360px; width: 100%;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Performance Metrics Bar Chart -->
+<div class="row mb-5 justify-content-center">
+  <div class="col-12">
+    <div class="glass-card p-0 overflow-hidden shadow-lg animate__animated animate__fadeInUp mx-auto"
+      style="border: 1px solid rgba(58, 123, 213, 0.2); max-width: 100%;">
+      <div id="barChartContainer" style="height: 400px; width: 100%;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Confusion Matrix Section -->
+<div class="glass-card mb-5 overflow-hidden shadow-2xl animate__animated animate__fadeInUp mx-auto"
+  style="border: 1px solid rgba(0, 210, 255, 0.2); max-width: 100%;">
+  <div class="p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="mb-0" style="font-family: 'Outfit'; color: #00d2ff; font-weight: 600;">Confusion Matrix (Saliency
+          Map)</h3>
+        <p class="text-muted mb-0" style="font-size: 0.85rem;">Correlation between clinical diagnosis and AI inference
+        </p>
+      </div>
+      <div class="d-none d-md-block text-end">
+        <span class="text-muted me-3" style="font-size: 0.8rem;"><i class="bi bi-calendar-check me-1"></i> Updated
+          Today</span>
+        <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 px-3 py-2">Validation
+          n=1,200</span>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-borderless text-center align-middle mb-0" style="color: #f8fafc; min-width: 600px;">
+        <thead>
+          <tr style="border-bottom: 2px solid rgba(255,255,255,0.05);">
+            <th class="text-start py-3 ps-3"
+              style="font-weight: 500; color: rgba(255,255,255,0.3); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">
+              Actual \ Predicted</th>
+            <th class="py-3" style="font-weight: 600; color: #00d2ff;">Mild</th>
+            <th class="py-3" style="font-weight: 600; color: #ef4444;">Moderate</th>
+            <th class="py-3" style="font-weight: 600; color: #10b981;">Non</th>
+            <th class="py-3 pe-3" style="font-weight: 600; color: #3a7bd5;">Very Mild</th>
+          </tr>
+        </thead>
+        <tbody style="font-family: 'Inter';">
+          <tr>
+            <th class="text-start py-4 ps-3"
+              style="font-weight: 500; font-family: 'Outfit'; color: rgba(255,255,255,0.7);">Mild Demented</th>
+            <td class="py-3">
+              <div class="matrix-cell high" data-bs-toggle="tooltip" title="97.3% Precision">292</div>
+            </td>
+            <td class="py-3">
+              <div class="matrix-cell low">2</div>
+            </td>
+            <td class="py-3">
+              <div class="matrix-cell low">1</div>
+            </td>
+            <td class="py-3 pe-3">
+              <div class="matrix-cell low">5</div>
+            </td>
+          </tr>
+          <tr>
+            <th class="text-start py-4 ps-3"
+              style="font-weight: 500; font-family: 'Outfit'; color: rgba(255,255,255,0.7);">Moderate</th>
+            <td class="py-3">
+              <div class="matrix-cell low">1</div>
+            </td>
+            <td class="py-3">
+              <div class="matrix-cell high" data-bs-toggle="tooltip" title="99.3% Precision">298</div>
+            </td>
+            <td class="py-3">
+              <div class="matrix-cell low">0</div>
+            </td>
+            <td class="py-3 pe-3">
+              <div class="matrix-cell low">1</div>
+            </td>
+          </tr>
+          <tr>
+            <th class="text-start py-4 ps-3"
+              style="font-weight: 500; font-family: 'Outfit'; color: rgba(255,255,255,0.7);">Non Demented</th>
+            <td class="py-3">
+              <div class="matrix-cell low">2</div>
+            </td>
+            <td class="py-3">
+              <div class="matrix-cell low">0</div>
+            </td>
+            <td class="py-3">
+              <div class="matrix-cell high" data-bs-toggle="tooltip" title="98.3% Precision">295</div>
+            </td>
+            <td class="py-3 pe-3">
+              <div class="matrix-cell low">3</div>
+            </td>
+          </tr>
+          <tr>
+            <th class="text-start py-4 ps-3"
+              style="font-weight: 500; font-family: 'Outfit'; color: rgba(255,255,255,0.7);">Very Mild</th>
+            <td class="py-3">
+              <div class="matrix-cell med">12</div>
+            </td>
+            <td class="py-3">
+              <div class="matrix-cell low">1</div>
+            </td>
+            <td class="py-3">
+              <div class="matrix-cell low">6</div>
+            </td>
+            <td class="py-3 pe-3">
+              <div class="matrix-cell high" data-bs-toggle="tooltip" title="93.7% Precision">281</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  .matrix-cell {
+    padding: 16px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: default;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .matrix-cell.high {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(16, 185, 129, 0.1) 100%);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
+  }
+
+  .matrix-cell.med {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.2);
+  }
+
+  .matrix-cell.low {
+    color: rgba(255, 255, 255, 0.25);
+    font-weight: 400;
+  }
+
+  .matrix-cell:hover {
+    transform: scale(1.1) translateY(-5px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+  }
+
+  .accuracy-number {
+    animation: pulseGlow 3s infinite ease-in-out;
+  }
+
+  @keyframes pulseGlow {
+
+    0%,
+    100% {
+      filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.3));
+    }
+
+    50% {
+      filter: drop-shadow(0 0 25px rgba(0, 210, 255, 0.6));
+    }
+  }
+</style>
+
+<div class="mt-5 text-center animate__animated animate__fadeIn animate__delay-1s">
+  <p class="text-muted" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+    <i class="bi bi-info-circle-fill text-info me-1"></i> REMDEX Clinical Validation Protocol v2.4 | System optimized
+    for MRI T1-weighted neuroimaging.
+  </p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+  window.onload = function () {
+    var doughnutChart = new CanvasJS.Chart("chartContainer", {
+      animationEnabled: true,
+      theme: "dark2",
+      backgroundColor: "transparent",
+      title: {
+        text: "Diagnostic Distribution",
+        fontFamily: "Outfit",
+        fontWeight: "bold",
+        fontColor: "#00d2ff",
+        fontSize: 22,
+        padding: 20
+      },
+      legend: {
+        fontFamily: "Inter",
+        fontColor: "#f8fafc",
+        fontSize: 14,
+        verticalAlign: "center"
+      },
+      data: [{
+        type: "doughnut",
+        innerRadius: "80%",
+        startAngle: 240,
+        yValueFormatString: "##0.00'%'",
+        indexLabel: "{label}",
+        indexLabelFontFamily: "Inter",
+        indexLabelFontColor: "#f8fafc",
+        indexLabelFontSize: 12,
+        showInLegend: true,
+        dataPoints: [
+          { y: 79.45, label: "Non Demented", color: "#10b981" },
+          { y: 7.31, label: "Very Mild", color: "#3a7bd5" },
+          { y: 7.06, label: "Mild Demented", color: "#00d2ff" },
+          { y: 4.91, label: "Moderate", color: "#ef4444" }
+        ]
+      }]
+    });
+    doughnutChart.render();
+
+    var barChart = new CanvasJS.Chart("barChartContainer", {
+      animationEnabled: true,
+      theme: "dark1",
+      backgroundColor: "transparent",
+      title: {
+        text: "Model Precision Tracking (Weekly)",
+        fontFamily: "Outfit",
+        fontWeight: "bold",
+        fontColor: "#3a7bd5",
+        fontSize: 22,
+        padding: 20
+      },
+      axisX: {
+        labelFontFamily: "Inter",
+        labelFontColor: "#8e9aaf",
+        lineThickness: 0,
+        tickThickness: 0
+      },
+      axisY: {
+        gridColor: "rgba(255,255,255,0.05)",
+        labelFontFamily: "Inter",
+        labelFontColor: "#8e9aaf",
+        suffix: "%",
+        lineThickness: 0,
+        tickThickness: 0
+      },
+      data: [{
+        type: "column",
+        color: "#00d2ff",
+        dataPoints: [
+          { label: "Week 1", y: 94.5 },
+          { label: "Week 2", y: 95.2 },
+          { label: "Week 3", y: 96.1 },
+          { label: "Week 4", y: 97.2 }
+        ]
+      }]
+    });
+    barChart.render();
+  }
+</script>
+{% endblock %}

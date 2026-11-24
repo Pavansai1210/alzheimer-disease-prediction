@@ -1,0 +1,170 @@
+{% extends "base_modern.html" %}
+
+{% block title %}Disease Classifier - REMDEX AI{% endblock %}
+
+{% block extra_css %}
+<style>
+    .prediction-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .upload-area {
+        border: 2px dashed var(--glass-border);
+        border-radius: 20px;
+        padding: 3rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .upload-area:hover {
+        border-color: var(--primary);
+        background: rgba(0, 210, 255, 0.05);
+    }
+
+    .img-preview-box {
+        max-width: 400px;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--glass-border);
+        margin-top: 2rem;
+        display: none;
+    }
+
+    #imagePreview img {
+        width: 100%;
+        display: block;
+    }
+
+    .result-card {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        display: none;
+        animation: slideUp 0.5s ease-out;
+    }
+
+    .loader-pulse {
+        width: 48px;
+        height: 48px;
+        border: 5px solid var(--primary);
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        display: none;
+        animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="prediction-container">
+    <div class="text-center mb-4">
+        <h1 class="gradient-text" style="font-size: 2.5rem;">Alzheimer's Disease Prediction</h1>
+        <p class="text-muted">Upload an MRI scan for AI-powered clinical analysis</p>
+    </div>
+
+    <div class="glass-card" style="max-width: 800px;">
+        <form id="upload-file" method="post" enctype="multipart/form-data">
+            <div class="upload-area" onclick="document.getElementById('imageUpload').click()">
+                <i class="bi bi-cloud-arrow-up" style="font-size: 3rem; color: var(--primary);"></i>
+                <h3 class="mt-4">Choose MRI Scan</h3>
+                <p class="text-muted">Support formats: PNG, JPG, JPEG</p>
+                <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg" style="display: none;">
+            </div>
+        </form>
+
+        <div class="img-preview-box" id="previewContainer">
+            <div id="imagePreview"></div>
+            <div class="p-4 text-center">
+                <button type="button" class="btn-modern btn-primary-modern" id="btn-predict" style="width: 100%;">
+                    Analyze Scan
+                </button>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <div class="loader-pulse" id="loadingIndicator" style="margin: 0 auto;"></div>
+        </div>
+
+        <div class="result-card" id="resultCard">
+            <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">
+                <i class="bi bi-check-circle-fill"></i> Analysis Complete
+            </h4>
+            <p id="resultText" style="font-size: 1.1rem; line-height: 1.6;"></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Image Preview
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreview').html('<img src="' + e.target.result + '" />');
+                    $('#previewContainer').fadeIn(600);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imageUpload").change(function () {
+            readURL(this);
+            $("#resultCard").hide();
+        });
+
+        // Predict
+        $('#btn-predict').click(function () {
+            var form_data = new FormData($('#upload-file')[0]);
+
+            // Show loading
+            $(this).hide();
+            $('#loadingIndicator').show();
+            $("#resultCard").hide();
+
+            // Make prediction
+            $.ajax({
+                type: 'POST',
+                url: '/predict',
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                async: true,
+                success: function (data) {
+                    $('#loadingIndicator').hide();
+                    $('#btn-predict').show();
+                    $('#resultText').text(data);
+                    $('#resultCard').fadeIn(600);
+                },
+                error: function () {
+                    $('#loadingIndicator').hide();
+                    $('#btn-predict').show();
+                    alert("An error occurred during analysis.");
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

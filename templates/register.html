@@ -1,0 +1,51 @@
+{% extends "base_modern.html" %}
+
+{% block title %}Create Account - REMDEX AI{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+    <div class="glass-card">
+        <div class="text-center mb-4">
+            <h2 class="gradient-text" style="font-size: 2rem;">Join REMDEX AI</h2>
+            <p class="text-muted">Start your journey to better health guidance</p>
+        </div>
+
+        <form action="{{ url_for('register') }}" method="POST">
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control-modern"
+                    placeholder="Choose a username" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control-modern" placeholder="Enter your email"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control-modern" placeholder="••••••••"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control-modern"
+                    placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-modern btn-primary-modern" style="width: 100%; margin-top: 1rem;">
+                Create Account
+            </button>
+        </form>
+
+        <div class="text-center mt-4">
+            <p class="text-muted" style="font-size: 0.9rem;">
+                Already have an account? <a href="{{ url_for('login') }}"
+                    style="color: var(--primary); text-decoration: none; font-weight: 600;">Log In</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

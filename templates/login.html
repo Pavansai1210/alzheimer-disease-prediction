@@ -1,0 +1,51 @@
+{% extends "base_modern.html" %}
+
+{% block title %}Welcome Back - REMDEX AI{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+  <div class="glass-card">
+    <div class="text-center mb-4">
+      <h2 class="gradient-text" style="font-size: 2rem;">Welcome Back</h2>
+      <p class="text-muted">Sign in to continue your health journey</p>
+    </div>
+
+    <form action="{{ url_for('login') }}" method="POST">
+      <div class="form-group">
+        <label class="form-label" for="email">Email Address</label>
+        <div style="position: relative;">
+          <input type="email" id="email" name="email" class="form-control-modern" placeholder="Enter your email"
+            required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-control-modern" placeholder="••••••••"
+          required>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <label
+          style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); cursor: pointer;">
+          <input type="checkbox" name="remember" style="accent-color: var(--primary);"> Remember me
+        </label>
+        <a href="{{ url_for('forgot_password') }}"
+          style="font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 500;">Forgot
+          Password?</a>
+      </div>
+
+      <button type="submit" class="btn-modern btn-primary-modern" style="width: 100%;">
+        Sign In
+      </button>
+    </form>
+
+    <div class="text-center mt-4">
+      <p class="text-muted" style="font-size: 0.9rem;">
+        Don't have an account? <a href="{{ url_for('register') }}"
+          style="color: var(--primary); text-decoration: none; font-weight: 600;">Register Now</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

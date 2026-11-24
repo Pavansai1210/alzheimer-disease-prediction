@@ -1,0 +1,32 @@
+```gitignore
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Database
+instance/
+*.db
+*.sqlite3
+
+# Secrets
+.env
+.env.*
+
+# Temporary files
+*.log
+uploads/
+temp/
+.ipynb_checkpoints/
+
+# Dataset
+dataset/
+
+# OS files
+.DS_Store
+Thumbs.db
+```
